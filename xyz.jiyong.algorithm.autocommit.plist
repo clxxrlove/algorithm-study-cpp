@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>xyz.jiyong.algorithm.autocommit</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/jiyong/XcodeProjects/algorithm-study-cpp/auto_commit.sh</string>
+    </array>
+
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>6</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+
+    <key>KeepAlive</key>
+    <false/>
+
+    <key>StandardOutPath</key>
+    <string>/tmp/cronjob.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/cronjob.err</string>
+</dict>
+</plist>
