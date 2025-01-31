@@ -17,3 +17,5 @@
   - 아이디어
 - [P5 - 2887 행성 터널](https://www.acmicpc.net/problem/2887)
   - MST가 가물가물할 때 반드시 다시 풀어야 할 문제
+- [G2 - 10775 공항](https://www.acmicpc.net/problem/10775)
+  - 문제가 이해가 안 됐음. 한국말이 제일 어렵다.
