@@ -21,3 +21,7 @@
   - 문제가 이해가 안 됐음. 한국말이 제일 어렵다.
 - [G4 - 2015 수들의 합 4](https://www.acmicpc.net/problem/2015)
   - 누적 합 활용하는 게 아쉽다. 이해하는 데 꽤나 오래 걸려서 꼭 다시 풀어보기
+- [G4 - 27172 수 나누기 게임](https://www.acmicpc.net/problem/27172)
+  - 다시 풀면 더 잘 풀거라고 생각한다. 정수론이라 어려웠던거지만 반대로 우선순위는 낮아보임.
+- [G3 - 2342 Dance Dance Revolution](https://www.acmicpc.net/problem/2342)
+  - 이게 왜 DP인가 고민 많이 했음. 점화식 이해하기 어려웠음.
