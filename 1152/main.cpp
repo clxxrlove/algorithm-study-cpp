@@ -6,17 +6,52 @@
 //
 
 #include <iostream>
-#include <sstream>
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
+void setDefault() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+}
+
+string ltrim(const string& s) {
+    auto start = find_if(s.begin(), s.end(), [](unsigned char ch) {
+        return !isspace(ch);
+    });
+    return string(start, s.end());
+}
+
+string rtrim(const string& s) {
+    auto end = find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
+        return !isspace(ch);
+    }).base();
+    return string(s.begin(), end);
+}
+
+vector<string> split(const string& s, string delimiter) {
+    vector<string> result;
+    
+    size_t start = 0;
+    size_t end = s.find(delimiter);
+    
+    while (end != string::npos) {
+        result.push_back(s.substr(start, end - start));
+        start = end + delimiter.size();
+        end = s.find(delimiter, start);
+    }
+    
+    result.push_back(s.substr(start));
+    
+    return result;
+}
+
 int main(int argc, const char * argv[]) {
-  string s, tmp;
-  int ans = 0;
-  getline(cin, s);
-  istringstream stream(s);
-  
-  while (stream >> tmp) { ++ans; }
-  printf("%d", ans);
-  return 0;
+    string input;
+    getline(cin, input);
+    
+    cout << split(ltrim(rtrim(input)), " ").size();
+    
+    return 0;
 }
