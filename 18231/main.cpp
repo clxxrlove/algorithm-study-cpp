@@ -12,30 +12,43 @@
 #include <queue>
 
 using namespace std;
+using vi = vector<int>;
+using vvi = vector<vector<int>>;
 
 void setDefault() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
 }
 
-int _find(int a, vector<int>& parent) {
-    if (a != parent[a]) {
-        parent[a] = _find(parent[a], parent);
-    }
-    return parent[a];
-}
-
-void _union(int a, int b, vector<int>& parent, vector<int>& urank) {
-    int fa = _find(a, parent);
-    int fb = _find(b, parent);
+void bfs(const vvi& graph,
+         const vector<bool>& destroyed,
+         vector<bool>& visited,
+         vector<int>& answer,
+         int start) {
+    queue<int> q;
+    q.push(start);
     
-    if (urank[fa] > urank[fb]) {
-        parent[fb] = fa;
-    } else if (urank[fa] < urank[fb]) {
-        parent[fa] = fb;
-    } else {
-        parent[fb] = fa;
-        ++urank[fa];
+    while (!q.empty()) {
+        int current = q.front();
+        q.pop();
+        
+        bool check = true;
+        
+        for (int pos: graph[current]) {
+            if (!destroyed[pos]) {
+                check = false;
+                break;
+            }
+        }
+        
+        if (check) {
+            answer.push_back(current);
+            visited[current] = true;
+            
+            for (int pos: graph[current]) {
+                visited[pos] = true;
+            }
+        }
     }
 }
 
@@ -45,7 +58,7 @@ int main(int argc, const char * argv[]) {
     int n, m, s, e;
     cin >> n >> m;
     
-    vector<vector<int>> graph(n + 1, vector<int>());
+    vvi graph(n + 1, vi());
     for (int i = 0; i < m; ++i) {
         cin >> s >> e;
         graph[s].push_back(e);
@@ -55,54 +68,30 @@ int main(int argc, const char * argv[]) {
     int k; cin >> k;
     
     vector<bool> destroyed(n + 1, false);
-    vector<int> dcity(k);
+    vi dcity(k);
     for (int i = 0; i < k; ++i) {
         cin >> dcity[i];
         destroyed[dcity[i]] = true;
     }
     
-    vector<int> parent(n + 1);
-    vector<int> urank(n + 1, 0);
-    for (int i = 1; i <= n; ++i) parent[i] = i;
+    vector<int> answer;
+    vector<bool> visited(n + 1, false);
     for (int city: dcity) {
-        for (int neighbor: graph[city]) {
-            if (destroyed[neighbor]) {
-                _union(city, neighbor, parent, urank);
-            }
+        if (destroyed[city]) {
+            bfs(graph, destroyed, visited, answer, city);
         }
     }
     
-    set<int> bomb_sites;
-    set<int> visited;
-    queue<int> q;
-
-    for (int city: dcity) {
-        int root = _find(city, parent);
-        if (visited.count(root)) continue;  // 이미 선택된 루트는 스킵
-        visited.insert(root);
-        
-        // 🔹 BFS를 이용하여 최소한의 폭탄 위치 찾기
-        q.push(root);
-        while (!q.empty()) {
-            int curr = q.front();
-            q.pop();
-            
-            if (destroyed[curr]) {
-                bomb_sites.insert(curr);
-                break;  // 해당 연결 요소에서 하나만 선택하면 됨
-            }
-            
-            for (int neighbor: graph[curr]) {
-                if (destroyed[neighbor] && !bomb_sites.count(neighbor)) {
-                    bomb_sites.insert(neighbor);
-                    break;
-                }
-                q.push(neighbor);
-            }
+    for (int i = 1; i <= n; ++i) {
+        if (visited[i] != destroyed[i]) {
+            cout << -1; return 0;
         }
     }
     
-    for (int tmp: bomb_sites) cout << tmp << " ";
+    cout << answer.size() << '\n';
+    for (int ans: answer) {
+        cout << ans << ' ';
+    }
     
     return 0;
 }
