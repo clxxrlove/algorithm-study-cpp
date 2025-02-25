@@ -31,7 +31,7 @@ vector<ii> bfs(const vvi& graph) {
     
     vector<ii> result;
     
-    queue<ii> q;
+    queue<ii> q; 
     q.emplace(0, 0);
     
     vvb visited(n, vb(m, false));
