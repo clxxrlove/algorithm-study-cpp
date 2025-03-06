@@ -20,6 +20,10 @@ struct Edge {
     Edge(int start, int end, int weight): start(start), end(end), weight(weight) {}
     
     bool operator<(const Edge& other) const {
+        if (weight == other.weight) {
+            if (start == other.start) return end < other.end;
+            return start < other.start;
+        }
         return weight > other.weight;
     }
 };
@@ -36,25 +40,18 @@ int __find(int x, vector<int>& parent) {
     return parent[x];
 }
 
-void __union(int a, int b, vector<int>& parent) {
-    parent[__find(b, parent)] = __find(a, parent);
-}
-
-int bfs(int start, int end, const vector<Edge>& edges, vector<bool>& visited) {
-    queue<pair<int, int>> q;
-    q.emplace(start, 0);
-    visited[start] = true;
+void __union(int a, int b, vector<int>& parent, vector<int>& __rank) {
+    int fa = __find(a, parent);
+    int fb = __find(b, parent);
     
-    while (!q.empty()) {
-        int current = q.front().first;
-        int cost = q.front().second;
-        q.pop();
-        
-        if (current == end) return cost;
-//        for (
+    if (__rank[fa] > __rank[fb]) {
+        parent[fb] = fa;
+    } else if (__rank[fa] < __rank[fb]) {
+        parent[fa] = fb;
+    } else {
+        parent[fb] = fa;
+        __rank[fa]++;
     }
-    
-    return -1;
 }
 
 int main(int argc, const char * argv[]) {
@@ -73,17 +70,23 @@ int main(int argc, const char * argv[]) {
     sort(edges.begin(), edges.end());
     
     vector<int> parent(n + 1);
+    vector<int> __rank(n + 1, 0);
     for (int i = 0; i <= n; ++i) parent[i] = i;
     
-    vector<Edge> result;
     int count = 0;
-    for (auto& e: edges) {
-        if (__find(e.start, parent) != __find(e.end, parent)) {
-            __union(e.start, e.end, parent);
-            result.push_back(e);
-            if (++count == n - 1) break;
+    int answer = 1e9;
+    for (auto& edge: edges) {
+        if (__find(edge.start, parent) != __find(edge.end, parent)) {
+            __union(edge.start, edge.end, parent, __rank);
+            answer = min(answer, edge.weight);
+        }
+        if (__find(s, parent) == __find(e, parent)) {
+            cout << answer << '\n';
+            return 0;
         }
     }
+    
+    cout << 0 << '\n';
     
     return 0;
 }
