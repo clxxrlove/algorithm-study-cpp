@@ -98,7 +98,7 @@ void solution() {
     
     while (true) {
         bool flag = false;
-        for (int i = 0; i <= 100000; ++i) g[i].clear();
+        for (int i = 0; i <= queries.size(); ++i) g[i].clear();
         for (int i = 0; i < q; ++i) {
             auto qr = queries[i];
             if (qr.lo <= qr.hi) {
