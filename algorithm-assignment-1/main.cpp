@@ -23,17 +23,17 @@ void input() {
     cin >> n;
 }
 
-ll solution(ll left, ll right) {
-    if (left == right) return left;
-    ll mid = (left + right) / 2;
-    return solution(left, mid) + solution(mid + 1, right);
+ll solution(ll x) {
+    if (x == 0) return 0;
+    if (x % 2 == 0) return solution(x / 2) * 2 + (x / 2) * (x / 2 + 1);
+    else return solution(x / 2) * 2 + (x / 2 + 1) * (x / 2 + 1);
 }
 
 int main(int argc, const char * argv[]) {
     fast_io();
     
     input();
-    cout << solution(1, n) << '\n';
+    cout << solution(n) << '\n';
     
     return 0;
 }
